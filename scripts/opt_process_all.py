@@ -1,6 +1,11 @@
 #process_all.py
 # argv[1]: name and path of hmmerscan results
 # argv[2] : output file
+# argv[3] : level, ie bactNOG, euNOG
+# argv[4] : proteome filename
+# argv[5] : e value cutoff
+
+
 # Returns a space seperated text file with rank, level, proteinID, GroupID, evalue, QueryRange, and proteomeID (from proteome file name). Rank 0 orthogroup is proteinID when a protein has no significant hits (evalue>0.01). All hits with an e-value<=0.01 yield an entry, rank is based on order in hmmer results.
 
 

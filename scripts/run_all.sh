@@ -1,10 +1,22 @@
 #BASEDIR=/work/03491/cmcwhite/plant_orthologs
 BASEDIR=$( pwd )
+
+#species codehttps://github.com/marcottelab/hmm_proteome_annotation
 SPEC=$1
+
+#euNOG, bactNOG
 LVL=$2
+
+#proteome name
 PROTEOME=$3
+
+#significant hit cutoff
 CUTOFF=$4
+
+#name of hmm output file
 SCAN=$5
+
+#name of eggnog annotation file
 ANNOT=$6
 
 SCRIPTLOC=$BASEDIR/scripts
@@ -47,7 +59,7 @@ grep -P "\t1\t" ${BASE_OUTFILE}_annotated.txt > ${BASE_OUTFILE}_tophit.txt
 
 #python $SCRIPTLOC/get_fusions.py $ANNOT_OUTFILE
 
-#Proteome annotation not running?
+#Proteome annotation not working?
 python $SCRIPTLOC/annotate_fasta.py $ANNOT $BASEDIR/proteomes/$SPEC/$PROTEOME
 
 
