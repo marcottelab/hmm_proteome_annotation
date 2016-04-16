@@ -1,0 +1,9 @@
+#!/bin/bash
+
+python scripts/process_fusions.py input_data/ta_IWGSC_MIPSv2.2_HighConf_REPR_UNMAPPED_PROTEIN_2014Jul18.fasta output_data/euNOG_traes/scan0.txt eukaryotes output_data/euNOG_traes/traes_fusions.txt
+python scripts/process_fusions.py input_data/ta_IWGSC_MIPSv2.2_HighConf_REPR_UNMAPPED_PROTEIN_2014Jul18.fasta output_data/euNOG_traes/scan1.txt eukaryotes output_data/euNOG_traes/traes_fusions.txt
+python scripts/process_fusions.py input_data/ta_IWGSC_MIPSv2.2_HighConf_REPR_UNMAPPED_PROTEIN_2014Jul18.fasta output_data/euNOG_traes/scan2.txt eukaryotes output_data/euNOG_traes/traes_fusions.txt
+python scripts/process_fusions.py input_data/ta_IWGSC_MIPSv2.2_HighConf_REPR_UNMAPPED_PROTEIN_2014Jul18.fasta output_data/euNOG_traes/scan3.txt eukaryotes output_data/euNOG_traes/traes_fusions.txt
+python scripts/process_fusions.py input_data/ta_IWGSC_MIPSv2.2_HighConf_REPR_UNMAPPED_PROTEIN_2014Jul18.fasta output_data/euNOG_traes/scan4.txt eukaryotes output_data/euNOG_traes/traes_fusions.txt
+python scripts/process_fusions.py input_data/ta_IWGSC_MIPSv2.2_HighConf_REPR_UNMAPPED_PROTEIN_2014Jul18.fasta output_data/euNOG_traes/scan5.txt eukaryotes output_data/euNOG_traes/traes_fusions.txt
+
