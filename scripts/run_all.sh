@@ -48,10 +48,18 @@ python $SCRIPTLOC/opt_process_all.py $SCAN.txt $ALL_OUTFILE $LVL $PROTEOME $CUTO
 
 python $SCRIPTLOC/get_annotation.py $ALL_OUTFILE $ANNOTLOC/$ANNOT
 
-grep -P "\tn/a\t" ${BASE_OUTFILE}_annotated.txt > ${BASE_OUTFILE}_nonhits.txt
 
-grep -P "\t1\t" ${BASE_OUTFILE}_annotated.txt > ${BASE_OUTFILE}_tophit.txt
+echo "GroupID	Rank	Level	ProteinID	evalue	QueryRange	ProteomeID	Hitlength	Annotation" > ${BASE_OUTFILE}_nonhits.txt
+grep -P "\tn/a\t" ${BASE_OUTFILE}_annotated.txt >> ${BASE_OUTFILE}_nonhits.txt
 
+
+echo "GroupID	Rank	Level	ProteinID	evalue	QueryRange	ProteomeID	Hitlength	Annotation" > ${BASE_OUTFILE}_tophit.txt
+grep -P "\t1\t" ${BASE_OUTFILE}_annotated.txt >> ${BASE_OUTFILE}_tophit.txt
+
+
+echo "GroupID	Rank	Level	ProteinID	evalue	QueryRange	ProteomeID	Hitlength	Annotation" > ${BASE_OUTFILE}_toptwo.txt
+grep -P "\t1\t" ${BASE_OUTFILE}_annotated.txt >> ${BASE_OUTFILE}_toptwo.txt
+grep -P "\t2\t" ${BASE_OUTFILE}_annotated.txt >> ${BASE_OUTFILE}_toptwo.txt
 
 #Will be rerun with every scan
 #Get fusions
@@ -60,7 +68,7 @@ grep -P "\t1\t" ${BASE_OUTFILE}_annotated.txt > ${BASE_OUTFILE}_tophit.txt
 #python $SCRIPTLOC/get_fusions.py $ANNOT_OUTFILE
 
 #Proteome annotation not working?
-python $SCRIPTLOC/annotate_fasta.py $ANNOT $BASEDIR/proteomes/$SPEC/$PROTEOME
+python $SCRIPTLOC/annotate_fasta.py ${BASE_OUTFILE}_tophit.txt $BASEDIR/proteomes/$SPEC/${PROTEOME}.fasta
 
 
 

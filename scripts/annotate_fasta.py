@@ -7,32 +7,39 @@ from Bio import SeqIO
 
 annotdict={}
 
-annotations = sys.argv[1] 
-outfilename = sys.argv[2].replace(".fasta", "") +  "_annotated.fasta"
+annotationsfile = sys.argv[1] 
+
+#Get protein name and annotation into a dictionary
+annot = open(annotationsfile, "r").readlines()
+for raw_line in annot[1:]:
+    line = raw_line.replace("\n", "")
+    i = line.split("\t")
+    if i[8]:
+        annot_line = i[8].replace(" ", "_") + "|" +  i[0] + "|" + i[2]
+    else:
+        annot_line = "none" + "|" + i[0] + "|" + i[2]
+    
+    annotdict[i[3]] = annot_line
+    level = i[2]
+
+infasta = sys.argv[2]
+outfilename = sys.argv[2].replace(".fasta", "") + "_"+ level + "_annotated.fasta"
 outfile = open(outfilename, "w")
 
 
-#Get protein name and annotation into a dictionary
-fasta= sys.argv[2] + .fasta
-annot = open(fasta, "r").readlines()
-for line in annot[1:]:
-    i = line.split("\t")
-    annotdict[i[3]] = i[8]
- 
-
-#print annotdict
-infasta = sys.argv[1] + ".fasta"
 handle = open(infasta, "rU")
 for record in SeqIO.parse(handle, "fasta"):
-    prot = record.id.split(" ")[0] 
-    #print record.description
+    #prot = record.id.split(" ")[0] 
+    prot = record.id
+
 
     try:
-        annotation = annotdict[prot]
+        annotation = annotdict[prot] 
 
     except:
-        annotation = "n/a\n"
-    finalheader = ">" +record.description + "|" + annotation
+        annotation = "None|none"
+  
+    finalheader = ">" + annotation + "|" + record.description +"\n"
     outfile.write(finalheader)
     outfile.write(str(record.seq) + "\n")
 
