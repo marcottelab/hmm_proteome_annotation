@@ -1,6 +1,6 @@
 #!/bin/bash
-#SBATCH -J scanID      # job name
-#SBATCH -o scanID.o%j       # output and error file name (%j expands to jobID)
+#SBATCH -J corum.allComplexesCore_acc_ids_uniprot.scan1      # job name
+#SBATCH -o corum.allComplexesCore_acc_ids_uniprot.scan1.o%j       # output and error file name (%j expands to jobID)
 #SBATCH -n 1              # total number of mpi tasks requested
 #SBATCH -p normal     # queue (partition) -- normal, development, etc.
 #SBATCH -c 16 		# number of CPUs/task
@@ -16,18 +16,18 @@ module load python/2.7.9
 #
 
 #ex human
-SPEC="speciescode"
+SPEC="corum"
 
 #ex euNOG
-LVL="phylolevel"
+LVL="euNOG"
 
 #ex arath_uniprot-proteom%3AUP0000006548scan1.fasta
-SCAN="scanID.fasta"
+SCAN="corum.allComplexesCore_acc_ids_uniprot.scan1.fasta"
 
 #ex uniprot-proteome%3AUP000006548.fasta
-PROTEOME="proteomename"
+PROTEOME="allComplexesCore_acc_ids_uniprot.fasta"
 
-NUMPROT="protlength"
+NUMPROT="2285"
 
 ANNOT=${LVL}.annotations.tsv
 

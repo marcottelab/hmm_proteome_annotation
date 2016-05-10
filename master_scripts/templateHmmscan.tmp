@@ -2,9 +2,9 @@
 #SBATCH -J scanID      # job name
 #SBATCH -o scanID.o%j       # output and error file name (%j expands to jobID)
 #SBATCH -n 1              # total number of mpi tasks requested
-#SBATCH -p normal     # queue (partition) -- normal, development, etc.
+#SBATCH -p development     # queue (partition) -- normal, development, etc.
 #SBATCH -c 16 		# number of CPUs/task
-#SBATCH -t 48:00:00        # run time (hh:mm:ss) - 1.5 hours
+#SBATCH -t 2:00:00        # run time (hh:mm:ss) - 1.5 hours
 #SBATCH --mail-user=claire.mcwhite@utexas.edu
 #SBATCH --mail-type=begin  # email me when the job starts
 #SBATCH --mail-type=end    # email me when the job finishes
@@ -19,10 +19,10 @@ module load python/2.7.9
 SPEC="speciescode"
 
 #ex euNOG
-LVL="phylolevel"
+LVL="level"
 
-#ex arath_uniprot-proteom%3AUP0000006548scan1.fasta
-SCAN="scanID.fasta"
+#ex arath_uniprot-proteom%3AUP0000006548scan1.txt
+SCAN="scanID"
 
 #ex uniprot-proteome%3AUP000006548.fasta
 PROTEOME="proteomename"
@@ -37,9 +37,9 @@ echo $LVL
 echo $SCAN
 echo $PROTEOME
 
-BASEDIR=$( pwd )
+$BASEDIR=$( pwd )
 
-OUTPUTLOC=$BASEDIR/output_data/${SPEC}_${PROTEOME%.*}_${LVL}
+OUTPUTLOC=$BASEDIR/output_data/${SPEC}_${PROTEOME}_${LVL}
 
 #mkdir output_data/${SPEC}_${PROTEOME}_${LVL}
 mkdir $OUTPUTLOC
@@ -52,7 +52,7 @@ echo $CUTOFF
 
 echo "start hmm scan"
 #/home1/03491/cmcwhite/bin/hmmer/hmmscan -Z $NUMPROT --cpu 16 -o output_data/${SPEC}_${PROTEOME}_${LVL}/${SCAN}.txt hmms/${LVL}_pressed/${LVL}_hmms proteomes/${SPEC}/${SCAN}.fasta 
-/home1/03491/cmcwhite/bin/hmmer/hmmscan -Z $NUMPROT --cpu 16 -o $OUTPUTLOC/${SCAN%.*}.txt hmms/${LVL}_pressed/${LVL}_hmms proteomes/${SPEC}/${SCAN} 
+/home1/03491/cmcwhite/bin/hmmer/hmmscan -Z $NUMPROT --cpu 16 -o output_data/${SPEC}_${PROTEOME}_${LVL}/${SCAN}.txt hmms/${LVL}_pressed/${LVL}_hmms proteomes/${SPEC}/${SCAN} 
 
 echo "start processing"
 #bash scripts/run_all.sh $SPEC $LVL $PROTEOME $CUTOFF $SCAN $ANNOT

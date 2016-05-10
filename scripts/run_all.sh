@@ -22,6 +22,7 @@ ANNOT=$6
 SCRIPTLOC=$BASEDIR/scripts
 ANNOTLOC=$BASEDIR/hmms
 
+
 echo "Starting post hmmscan processing"
 
 
@@ -41,7 +42,9 @@ fi
 echo "All hits"
 echo $( pwd )
 
-python $SCRIPTLOC/opt_process_all.py $SCAN.txt $ALL_OUTFILE $LVL $PROTEOME $CUTOFF
+
+#Instead of all these, have an argparse main script with an option for analysis type
+python $SCRIPTLOC/opt_process_all.py $SCAN.txt $ALL_OUTFILE $LVL $BASEDIR/proteomes/$SPEC/$PROTEOME $CUTOFF
 
 #Get top evalue hit
 #Will be rerun with every scan
@@ -49,15 +52,15 @@ python $SCRIPTLOC/opt_process_all.py $SCAN.txt $ALL_OUTFILE $LVL $PROTEOME $CUTO
 python $SCRIPTLOC/get_annotation.py $ALL_OUTFILE $ANNOTLOC/$ANNOT
 
 
-echo "GroupID	Rank	Level	ProteinID	evalue	QueryRange	ProteomeID	Hitlength	Annotation" > ${BASE_OUTFILE}_nonhits.txt
+echo "GroupID	Rank	Level	ProteinID	evalue	QueryRange	ProteomeID	Hitlength	Sequence	Annotation" > ${BASE_OUTFILE}_nonhits.txt
 grep -P "\tn/a\t" ${BASE_OUTFILE}_annotated.txt >> ${BASE_OUTFILE}_nonhits.txt
 
 
-echo "GroupID	Rank	Level	ProteinID	evalue	QueryRange	ProteomeID	Hitlength	Annotation" > ${BASE_OUTFILE}_tophit.txt
+echo "GroupID	Rank	Level	ProteinID	evalue	QueryRange	ProteomeID	Hitlength	Sequence	Annotation" > ${BASE_OUTFILE}_tophit.txt
 grep -P "\t1\t" ${BASE_OUTFILE}_annotated.txt >> ${BASE_OUTFILE}_tophit.txt
 
 
-echo "GroupID	Rank	Level	ProteinID	evalue	QueryRange	ProteomeID	Hitlength	Annotation" > ${BASE_OUTFILE}_toptwo.txt
+echo "GroupID	Rank	Level	ProteinID	evalue	QueryRange	ProteomeID	Hitlength	Sequence	Annotation" > ${BASE_OUTFILE}_toptwo.txt
 grep -P "\t1\t" ${BASE_OUTFILE}_annotated.txt >> ${BASE_OUTFILE}_toptwo.txt
 grep -P "\t2\t" ${BASE_OUTFILE}_annotated.txt >> ${BASE_OUTFILE}_toptwo.txt
 

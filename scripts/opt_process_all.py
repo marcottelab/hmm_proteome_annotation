@@ -15,6 +15,13 @@ import sys
 import ast
 import numpy as np
 
+import sys
+sys.path.append('/home1/03491/cmcwhite/bin')
+sys.path[0:0] = ['/home1/03491/cmcwhite/bin']
+
+from Bio import SeqIO
+
+
 sys.path[0:0] = ['/home1/03491/cmcwhite/bin']
 from Bio import SearchIO
 def process_all():
@@ -24,8 +31,14 @@ def process_all():
 	results = SearchIO.parse(sys.argv[1], "hmmer3-text")
         #print dir(results)
         level = sys.argv[3]
-        proteome=sys.argv[4]
+        proteomepath=sys.argv[4]
         cutoff=sys.argv[5]
+        fastafile = proteomepath + ".fasta"
+        fastahandle = open(fastafile, "rU")
+        print fastahandle
+        proteome = proteomepath.split("\t")[-1]
+        fasta = SeqIO.to_dict(SeqIO.parse(fastahandle, "fasta"))
+
         cutoff=float(cutoff)
         #print results.gi_code
 	
@@ -42,6 +55,8 @@ def process_all():
                 count = count + 1
 		pid = protein.id
                 print protein.id
+                seq = fasta[protein.id].seq
+                print seq
                 if len(protein) > 0:
                     print protein[0]
                 else:
@@ -63,7 +78,7 @@ def process_all():
 			e = "n/a"
                         qr= "n/a"
                         hitlen="n/a"
- 			outstring = "\t".join([rank, level, pid, OGid, e, str(qr).replace(" ", ""), proteome, hitlen, "\n"])
+ 			outstring = "\t".join([rank, level, pid, OGid, e, str(qr).replace(" ", ""), proteome, hitlen, seq, "\n"])
        			outfile.write(outstring)
 		        #processed.append((rank, level, pid, OGid, e, qr, proteome))			
 		else:
@@ -91,8 +106,10 @@ def process_all():
                                     hitlentmp=qr[j][1] - qr[j][0]
                                     hitlen = hitlen +hitlentmp
                                 hitlen=str(hitlen) 
+                                if hitlen == 0:
+                                    hitlen = "n/a"
                                 i = i + 1
-				outstring = "\t".join([rank, level, pid, OGid, e, str(qr).replace(" ", ""), proteome, hitlen, "\n"])
+				outstring = "\t".join([rank, level, pid, OGid, e, str(qr).replace(" ", ""), proteome, hitlen, seq, "\n"])
        				outfile.write(outstring)
                     
 			

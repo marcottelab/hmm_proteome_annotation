@@ -37,7 +37,7 @@ for record in SeqIO.parse(handle, "fasta"):
         annotation = annotdict[prot] 
 
     except:
-        annotation = "None|none"
+        annotation = "None|none|none"
   
     finalheader = ">" + annotation + "|" + record.description +"\n"
     outfile.write(finalheader)
