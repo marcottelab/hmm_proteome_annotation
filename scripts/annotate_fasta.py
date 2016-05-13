@@ -15,7 +15,7 @@ for raw_line in annot[1:]:
     line = raw_line.replace("\n", "")
     i = line.split("\t")
     if i[8]:
-        annot_line = i[8].replace(" ", "_") + "|" +  i[0] + "|" + i[2]
+        annot_line = i[9].replace(" ", "_") + "|" +  i[0] + "|" + i[2]
     else:
         annot_line = "none" + "|" + i[0] + "|" + i[2]
     

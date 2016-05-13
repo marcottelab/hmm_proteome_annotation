@@ -59,7 +59,7 @@ echo $PROTEOMENAME
 
 
 
-rm *scan*
+#rm *scan*
 
 python $BASEDIR/scripts/proteome_breaker.py $PROTEOMENAME 20000 $SPEC
 
@@ -85,9 +85,11 @@ do
    sed -i "s@phylolevel@$LVL@g" $BASEDIR/master_scripts/$outfile
 #  sed -i "s@scanID@$SPEC.$protname.$scannum@g" $BASEDIR/master_scripts/$outfile
    sed -i "s@scanID@${i%.*}@g" $BASEDIR/master_scripts/$outfile
-#   sed -i "s@proteomename@$protname@g" $BASEDIR/master_scripts/$outfile
+#   sed -i "s@proteomepath@$PROTEOMEPATH@g" $BASEDIR/master_scripts/$outfile
    sed -i "s@protlength@$proteomelength@g" $BASEDIR/master_scripts/$outfile  
    sed -i "s@proteomename@$PROTEOMENAME@g" $BASEDIR/master_scripts/$outfile
+   sed -i "s@proteomepath@$PROTEOMEPATH@g" $BASEDIR/master_scripts/$outfile
+   sed -i "s@proteomedir@$PROTEOMEDIR@g" $BASEDIR/master_scripts/$outfile
 
 
   

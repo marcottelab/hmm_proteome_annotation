@@ -1,0 +1,15 @@
+
+For peptide lookup, need to have it not just match expected peptides, but also match miscleavages. Dan uses up to 2 miscleavages.
+
+
+
+
+#The next thing to do is to get the fasta sequencing in line with the full file. 
+
+
+#Current problems include: getting correct path to proteome in post scan processing.
+#Why is proteomename split by "\t" in opt process all
+#Fix heading when annotating FASTA
+
+
+

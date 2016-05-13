@@ -33,7 +33,7 @@ def process_all():
         level = sys.argv[3]
         proteomepath=sys.argv[4]
         cutoff=sys.argv[5]
-        fastafile = proteomepath + ".fasta"
+        fastafile = proteomepath
         fastahandle = open(fastafile, "rU")
         print fastahandle
         proteome = proteomepath.split("\t")[-1]
@@ -67,7 +67,8 @@ def process_all():
 			e = "n/a"
                         qr= "n/a"
                         hitlen="n/a"
- 			outstring = "\t".join([rank, level, pid, OGid, e, str(qr).replace(" ", ""), proteome, hitlen, "\n"])
+                        seq = "n/a"
+ 			outstring = "\t".join([rank, level, pid, OGid, e, str(qr).replace(" ", ""), proteome, hitlen, seq, "\n"])
        			outfile.write(outstring)
 		        #processed.append((rank, level, pid, OGid, e, qr, proteome))			
 		elif protein[0].evalue > cutoff: #proteins with hits that do not meet the threshold are treated as those without any hits
@@ -87,7 +88,7 @@ def process_all():
                                 #teststring = str(protein[i].evalue)+ " " + str(cutoff) + " "+ str(i) + " " + str(len(protein))+"\n"
                                 #outfile.write(teststring)
 				rank = str(i+1)
-                                print "enter loop"
+                                #print "enter loop"
                                 print protein[i].id
                                 if "." in protein[i].id:
        
@@ -109,7 +110,7 @@ def process_all():
                                 if hitlen == 0:
                                     hitlen = "n/a"
                                 i = i + 1
-				outstring = "\t".join([rank, level, pid, OGid, e, str(qr).replace(" ", ""), proteome, hitlen, seq, "\n"])
+				outstring = "\t".join([rank, level, pid, OGid, e, str(qr).replace(" ", ""), proteome, hitlen, str(seq), "\n"])
        				outfile.write(outstring)
                     
 			

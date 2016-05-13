@@ -14,13 +14,14 @@ import scan_proc_functions as spf
 import csv
 #sys.path[0:0] = ['/home1/03491/cmcwhite/bin']
 
-if len(sys.argv)==3:
+if len(sys.argv)==4:
     filename=sys.argv[1]
     annotationfilename=sys.argv[2]
+    print "annotationfilename", annotationfilename
     df = spf.processdf(filename)
     print len(df), "initial hits" 
     basename = filename.replace("all.txt", "")
-
+    fasta = sys.argv[3]
 
 
 
@@ -45,6 +46,8 @@ if len(sys.argv)==3:
     annotated = spf.annotate(df, annotationfilename)
     print annotated
     print len(annotated), "length after annotations"
+
+
     annotated.to_csv(outfile, sep="\t", index=False, quoting=csv.QUOTE_NONE, quotechar="")    
 
 #    if not only_hits.empty:
@@ -55,4 +58,4 @@ if len(sys.argv)==3:
 #        top1.to_csv(outfile, sep="\t", index=False, quoting=csv.QUOTE_NONE, quotechar="")    
    
 else:
-    print "need infile  [basename name]_all.txt generated from opt_process_all, and annotation file"
+    print "need infile  [basename name]_all.txt generated from opt_process_all,  annotation file, and fasta file"

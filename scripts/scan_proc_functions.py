@@ -104,6 +104,40 @@ def annotate(df, annotationtbl):
     final = final.reset_index()
     return final
 
+def get_sequence(df, fasta):
+    #http://stackoverflow.com/questions/19436789/biopython-seqio-to-pandas-dataframe
+    with open('sequences.fasta') as fasta_file:  # Will close handle cleanly
+        identifiers = []
+        sequences = []
+        for seq_record in SeqIO.parse(fasta_file, 'fasta'):  # (generator)
+            identifiers.append(seq_record.id)
+            sequences.append(seq_record.seq)
+        s1 = Series(identifiers, name='ID')
+        s2 = Series(sequences, name='Sequence')
+        #Gathering Series into a pandas DataFrame and rename index as ID column
+        df_fasta = DataFrame(dict(ID=s1, sequence=s2)).set_index(['ID'])
+    print df_fasta
+
+    print df
+    #print annotationtbl
+    #anntbl = pd.read_table(annotationtbl, sep="\t", header=None, index_col=False)
+    #print anntbl
+    #anntbl.columns = ['level', 'GroupID', 'x', 'y', 'z', 'Annotation']
+    #print anntbl
+    #anntbl = anntbl[['GroupID', 'Annotation']]
+    df_fasta = df_fasta.set_index(['ProteinID']) 
+    print anntbl 
+    df = df.set_index(['ProteinID'])
+    print df
+    final = df.join(df_fasta)
+    final = final.reset_index()
+    print final
+    return final
+
+
+
+
+
 """
 
 def longesthits(df, num):

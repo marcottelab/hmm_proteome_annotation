@@ -24,8 +24,16 @@ LVL="euNOG"
 #ex arath_uniprot-proteom%3AUP0000006548scan1.fasta
 SCAN="corum.allComplexesCore_acc_ids_uniprot.scan1.fasta"
 
+#ex proteomes/human/uniprot-proteome%3AUP000006548.fasta
+PROTEOMEPATH="proteomes/corum/allComplexesCore_acc_ids_uniprot.fasta"
+
 #ex uniprot-proteome%3AUP000006548.fasta
-PROTEOME="allComplexesCore_acc_ids_uniprot.fasta"
+PROTEOMENAME="allComplexesCore_acc_ids_uniprot.fasta"
+
+#ex proteomes/human/uniprot-proteome%3AUP000006548.fasta
+PROTEOMEDIR="proteomes/corum"
+
+
 
 NUMPROT="2285"
 
@@ -39,9 +47,8 @@ echo $PROTEOME
 
 BASEDIR=$( pwd )
 
-OUTPUTLOC=$BASEDIR/output_data/${SPEC}_${PROTEOME%.*}_${LVL}
+OUTPUTLOC=$BASEDIR/output_data/${SPEC}_${PROTEOMENAME%.*}_${LVL}
 
-#mkdir output_data/${SPEC}_${PROTEOME}_${LVL}
 mkdir $OUTPUTLOC
 
 #One false positive per proteome
@@ -52,10 +59,11 @@ echo $CUTOFF
 
 echo "start hmm scan"
 #/home1/03491/cmcwhite/bin/hmmer/hmmscan -Z $NUMPROT --cpu 16 -o output_data/${SPEC}_${PROTEOME}_${LVL}/${SCAN}.txt hmms/${LVL}_pressed/${LVL}_hmms proteomes/${SPEC}/${SCAN}.fasta 
-/home1/03491/cmcwhite/bin/hmmer/hmmscan -Z $NUMPROT --cpu 16 -o $OUTPUTLOC/${SCAN%.*}.txt hmms/${LVL}_pressed/${LVL}_hmms proteomes/${SPEC}/${SCAN} 
+#/home1/03491/cmcwhite/bin/hmmer/hmmscan -Z $NUMPROT --cpu 16 -o $OUTPUTLOC/${SCAN%.*}.txt hmms/${LVL}_pressed/${LVL}_hmms proteomes/${SPEC}/${SCAN} 
+/home1/03491/cmcwhite/bin/hmmer/hmmscan -Z $NUMPROT --cpu 16 -o $OUTPUTLOC/${SCAN%.*}.txt hmms/${LVL}_pressed/${LVL}_hmms $PROTEOMEDIR/${SCAN} 
 
 echo "start processing"
-#bash scripts/run_all.sh $SPEC $LVL $PROTEOME $CUTOFF $SCAN $ANNOT
+bash scripts/run_all.sh $SPEC $LVL $PROTEOME $CUTOFF $SCAN $ANNOT
 
 
 SCRIPTLOC=$BASEDIR/scripts
@@ -69,7 +77,7 @@ ALL_OUTFILE=${BASE_OUTFILE}_all.txt
 
 if [ ! -f $ALL_OUTFILE ]
     then
-        echo "Rank      Level   ProteinID       GroupID evalue  QueryRange      ProteomeID      Hitlength" >> $ALL_OUTFILE
+        echo "Rank	Level	ProteinID	GroupID	evalue	QueryRange	ProteomeID	Hitlength	Sequence" >> $ALL_OUTFILE
 fi
 
 echo "All hits"
@@ -77,27 +85,29 @@ echo $( pwd )
 
 
 #Instead of all these, have an argparse main script with an option for analysis type
-python $SCRIPTLOC/opt_process_all.py $SCAN $ALL_OUTFILE $LVL $PROTEOME $CUTOFF
+python $SCRIPTLOC/opt_process_all.py $OUTPUTLOC/${SCAN%.*}.txt $OUTPUTLOC/$ALL_OUTFILE $LVL $BASEDIR/$PROTEOMEPATH $CUTOFF
 
 #Get top evalue hit
 #Will be rerun with every scan
 
-python $SCRIPTLOC/get_annotation.py $ALL_OUTFILE $ANNOTLOC/$ANNOT
+python $SCRIPTLOC/get_annotation.py $ALL_OUTFILE $ANNOTLOC/$ANNOT $BASEDIR/$PROTEOMEPATH
 
 
-echo "GroupID   Rank    Level   ProteinID       evalue  QueryRange      ProteomeID      Hitlength       Sequence        Annotation" > ${BASE_OUTFILE}_nonhits.txt
+echo "GroupID	Rank	Level	ProteinID	evalue	QueryRange	ProteomeID	Hitlength	Sequence	Annotation" > ${BASE_OUTFILE}_nonhits.txt
 grep -P "\tn/a\t" ${BASE_OUTFILE}_annotated.txt >> ${BASE_OUTFILE}_nonhits.txt
 
 
-echo "GroupID   Rank    Level   ProteinID       evalue  QueryRange      ProteomeID      Hitlength       Sequence        Annotation" > ${BASE_OUTFILE}_tophit.txt
+echo "GroupID	Rank	Level	ProteinID	evalue	QueryRange	ProteomeID	Hitlength	Sequence	Annotation" > ${BASE_OUTFILE}_tophit.txt
 grep -P "\t1\t" ${BASE_OUTFILE}_annotated.txt >> ${BASE_OUTFILE}_tophit.txt
 
 
-echo "GroupID   Rank    Level   ProteinID       evalue  QueryRange      ProteomeID      Hitlength       Sequence        Annotation" > ${BASE_OUTFILE}_toptwo.txt
+echo "GroupID	Rank	Level	ProteinID	evalue	QueryRange	ProteomeID	Hitlength	Sequence	Annotation" > ${BASE_OUTFILE}_toptwo.txt
 grep -P "\t1\t" ${BASE_OUTFILE}_annotated.txt >> ${BASE_OUTFILE}_toptwo.txt
 grep -P "\t2\t" ${BASE_OUTFILE}_annotated.txt >> ${BASE_OUTFILE}_toptwo.txt
 
-python $SCRIPTLOC/annotate_fasta.py ${BASE_OUTFILE}_tophit.txt $BASEDIR/proteomes/$SPEC/${PROTEOME}.fasta
+python $SCRIPTLOC/annotate_fasta.py ${BASE_OUTFILE}_tophit.txt $BASEDIR/$PROTEOMEPATH
+
+
 ###############################
 #Will be rerun with every scan
 #Get fusions
