@@ -14,14 +14,14 @@ import scan_proc_functions as spf
 import csv
 #sys.path[0:0] = ['/home1/03491/cmcwhite/bin']
 
-if len(sys.argv)==4:
+if len(sys.argv)==3:
     filename=sys.argv[1]
     annotationfilename=sys.argv[2]
     print "annotationfilename", annotationfilename
     df = spf.processdf(filename)
     print len(df), "initial hits" 
     basename = filename.replace("all.txt", "")
-    fasta = sys.argv[3]
+#    fasta = sys.argv[3]
 
 
 

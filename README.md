@@ -35,6 +35,11 @@ proteomes/arath/uniprot-proteome%3AUP000006548.fasta
 bash masterscripts/startHmmscan.sh [species] [proteome] [level]
 
 ex.
-bash masterscripts/startHmmscan.sh arath uniprot-proteome%3AUP000006548.fasta euNOG 
+bash master_scripts/startHmmscan.sh arath proteomes/arath/uniprot-proteome%3AUP000006548.fasta euNOG
 
 This step takes up to 20 TACC hours depending on proteome/hmm profile count
+
+
+tophit + nonhits are combined to create look ups for the othology mass spec analysis
+
+

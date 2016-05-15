@@ -12,7 +12,6 @@
 #CDM 2/25/2015
 
 
-echo "change this to take full paths to the proteome"
 
 
 if [[ $# -eq 0 ]] ; then
@@ -52,44 +51,45 @@ cd $PROTEOMEDIR
 PROTEOMENAME=`basename $PROTEOMEPATH`
 echo $PROTEOMENAME
 
+OUTPUTLOC=$BASEDIR/output_data/${SPEC}_${PROTEOMENAME%.*}_${LVL}
 
+echo output location $OUTPUTLOC
+
+mkdir $OUTPUTLOC
+
+rm $OUTPUTLOC/${SPEC}.${LVL}_*
 
 
 #cd $BASEDIR/proteomes/$SPEC
 
 
 
-#rm *scan*
+rm *scan*
 
 python $BASEDIR/scripts/proteome_breaker.py $PROTEOMENAME 20000 $SPEC
 
-proteomelength=`cat *scan* | grep -c ">"`
+PROTEOMELENGTH=`cat *scan* | grep -c ">"`
 
-echo $proteomelength proteins in $SPEC proteome
+echo $PROTEOMELENGTH proteins in $SPEC proteome
 
 for i in *scan*
 do
    echo proteome segment $i
-#   protname=`echo $i | awk -F'.' '{print $2}'`  #Splitting on a "." is a bad idea
-#   scannum=`echo $i | awk -F'.' '{print $3}'`  #Likewise
 
    echo $protname proteome
-#   echo $scannum scan
 
    outfile=${i%.*}.sbatch 
 
-#   outfile=$SPEC.$protname.$scannum.sbatch
    echo $outfile
 
    sed "s@speciescode@$SPEC@g" $BASEDIR/master_scripts/templateHmmscan.sbatch > $BASEDIR/master_scripts/$outfile
    sed -i "s@phylolevel@$LVL@g" $BASEDIR/master_scripts/$outfile
-#  sed -i "s@scanID@$SPEC.$protname.$scannum@g" $BASEDIR/master_scripts/$outfile
    sed -i "s@scanID@${i%.*}@g" $BASEDIR/master_scripts/$outfile
-#   sed -i "s@proteomepath@$PROTEOMEPATH@g" $BASEDIR/master_scripts/$outfile
-   sed -i "s@protlength@$proteomelength@g" $BASEDIR/master_scripts/$outfile  
+   sed -i "s@proteomelength@$PROTEOMELENGTH@g" $BASEDIR/master_scripts/$outfile  
    sed -i "s@proteomename@$PROTEOMENAME@g" $BASEDIR/master_scripts/$outfile
    sed -i "s@proteomepath@$PROTEOMEPATH@g" $BASEDIR/master_scripts/$outfile
    sed -i "s@proteomedir@$PROTEOMEDIR@g" $BASEDIR/master_scripts/$outfile
+   sed -i "s@outputloc@$OUTPUTLOC@g" $BASEDIR/master_scripts/$outfile
 
 
   

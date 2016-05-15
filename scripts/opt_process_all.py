@@ -4,6 +4,7 @@
 # argv[3] : level, ie bactNOG, euNOG
 # argv[4] : proteome filename
 # argv[5] : e value cutoff
+# argv[6] : species
 
 
 # Returns a space seperated text file with rank, level, proteinID, GroupID, evalue, QueryRange, and proteomeID (from proteome file name). Rank 0 orthogroup is proteinID when a protein has no significant hits (evalue>0.01). All hits with an e-value<=0.01 yield an entry, rank is based on order in hmmer results.
@@ -25,6 +26,7 @@ from Bio import SeqIO
 sys.path[0:0] = ['/home1/03491/cmcwhite/bin']
 from Bio import SearchIO
 def process_all():
+        print sys.argv
         print "beginning process_all"
         outfile = open(sys.argv[2], "a")
 	#read in results
@@ -33,6 +35,7 @@ def process_all():
         level = sys.argv[3]
         proteomepath=sys.argv[4]
         cutoff=sys.argv[5]
+        species = sys.argv[6]
         fastafile = proteomepath
         fastahandle = open(fastafile, "rU")
         print fastahandle
@@ -56,7 +59,7 @@ def process_all():
 		pid = protein.id
                 print protein.id
                 seq = fasta[protein.id].seq
-                print seq
+                #print seq
                 if len(protein) > 0:
                     print protein[0]
                 else:
@@ -68,7 +71,11 @@ def process_all():
                         qr= "n/a"
                         hitlen="n/a"
                         seq = "n/a"
- 			outstring = "\t".join([rank, level, pid, OGid, e, str(qr).replace(" ", ""), proteome, hitlen, seq, "\n"])
+                        outlist = [rank, level, species, pid, OGid, e, str(qr).replace(" ", ""), proteome, hitlen, str(seq), "\n"]
+                        #print "situation 3"
+                        #print outlist
+		        outstring = "\t".join(outlist)
+
        			outfile.write(outstring)
 		        #processed.append((rank, level, pid, OGid, e, qr, proteome))			
 		elif protein[0].evalue > cutoff: #proteins with hits that do not meet the threshold are treated as those without any hits
@@ -79,7 +86,12 @@ def process_all():
 			e = "n/a"
                         qr= "n/a"
                         hitlen="n/a"
- 			outstring = "\t".join([rank, level, pid, OGid, e, str(qr).replace(" ", ""), proteome, hitlen, seq, "\n"])
+                        outlist = [rank, level, species, pid, OGid, e, str(qr).replace(" ", ""), proteome, hitlen, str(seq), "\n"]
+                        #print "situation 2"
+                        #print outlist
+		        outstring = "\t".join(outlist)
+
+                   
        			outfile.write(outstring)
 		        #processed.append((rank, level, pid, OGid, e, qr, proteome))			
 		else:
@@ -89,7 +101,7 @@ def process_all():
                                 #outfile.write(teststring)
 				rank = str(i+1)
                                 #print "enter loop"
-                                print protein[i].id
+                                #print protein[i].id
                                 if "." in protein[i].id:
        
   				    OGid = protein[i].id.split('.')
@@ -110,15 +122,20 @@ def process_all():
                                 if hitlen == 0:
                                     hitlen = "n/a"
                                 i = i + 1
-				outstring = "\t".join([rank, level, pid, OGid, e, str(qr).replace(" ", ""), proteome, hitlen, str(seq), "\n"])
+                                outlist = [rank, level, species, pid, OGid, e, str(qr).replace(" ", ""), proteome, hitlen, str(seq), "\n"]
+                                #print "situation 3"
+                                #print outlist
+ 				outstring = "\t".join(outlist)
+                               
        				outfile.write(outstring)
                     
 			
         outfile.close()
 
 print "checking entries"
+print sys.argv
 #check for correct number of inputs
-if len(sys.argv) !=6:
-	print("Incorrect inputs: need path/to/hmmer result, outfile name, lvl, proteome, cutoff.")
+if len(sys.argv) !=7:
+	print("Incorrect inputs: need path/to/hmmer result, outfile name, lvl, proteome, cutoff, species.")
 else:
    process_all()

@@ -15,14 +15,15 @@ for raw_line in annot[1:]:
     line = raw_line.replace("\n", "")
     i = line.split("\t")
     if i[8]:
-        annot_line = i[9].replace(" ", "_") + "|" +  i[0] + "|" + i[2]
+        annot_line = i[10].replace(" ", "_") + "|" +  i[0] + "|" + i[2]
     else:
         annot_line = "none" + "|" + i[0] + "|" + i[2]
     
     annotdict[i[3]] = annot_line
-    level = i[2]
+   
 
 infasta = sys.argv[2]
+level = sys.argv[3]
 outfilename = sys.argv[2].replace(".fasta", "") + "_"+ level + "_annotated.fasta"
 outfile = open(outfilename, "w")
 

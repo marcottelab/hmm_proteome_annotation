@@ -1,10 +1,10 @@
 #!/bin/bash
-#SBATCH -J arath.uniprot-proteome%3AUP000006548.scan1.euNOG      # job name
-#SBATCH -o arath.uniprot-proteome%3AUP000006548.scan1.euNOG.o%j       # output and error file name (%j expands to jobID)
+#SBATCH -J braol.uniprot-brassica+oleracea.scan2.euNOG      # job name
+#SBATCH -o braol.uniprot-brassica+oleracea.scan2.euNOG.o%j       # output and error file name (%j expands to jobID)
 #SBATCH -n 1              # total number of mpi tasks requested
 #SBATCH -p normal     # queue (partition) -- normal, development, etc.
 #SBATCH -c 16 		# number of CPUs/task
-#SBATCH -t 2:00:00        # run time (hh:mm:ss) - 1.5 hours
+#SBATCH -t 48:00:00        # run time (hh:mm:ss) - 1.5 hours
 #SBATCH --mail-user=claire.mcwhite@utexas.edu
 #SBATCH --mail-type=begin  # email me when the job starts
 #SBATCH --mail-type=end    # email me when the job finishes
@@ -15,23 +15,23 @@ module load python/2.7.9
 
 
 #ex human
-SPEC="arath"
+SPEC="braol"
 
 #ex euNOG
 LVL="euNOG"
 
 #ex arath_uniprot-proteom%3AUP0000006548scan1.txt
-SCAN="arath.uniprot-proteome%3AUP000006548.scan1"
+SCAN="braol.uniprot-brassica+oleracea.scan2"
 
 #ex uniprot-proteome%3AUP000006548.fasta
-PROTEOMENAME="uniprot-proteome%3AUP000006548.fasta"
+PROTEOMENAME="uniprot-brassica+oleracea.fasta"
 
-PROTEOMEPATH="proteomes/arath/uniprot-proteome%3AUP000006548.fasta"
+PROTEOMEPATH="proteomes/braol/uniprot-brassica+oleracea.fasta"
 
-PROTEOMEDIR="proteomes/arath"
+PROTEOMEDIR="proteomes/braol"
 
 
-NUMPROT="31527"
+NUMPROT="58535"
 
 ANNOT=${LVL}.annotations.tsv
 
@@ -77,7 +77,7 @@ cd $OUTPUTLOC
 
 BASE_OUTFILE=${SPEC}.${LVL}
 ALL_OUTFILE=${BASE_OUTFILE}_all.txt
-TMP_OUTFILE=${BASE_OUTFILE}_temporary_arath.uniprot-proteome%3AUP000006548.scan1.txt
+TMP_OUTFILE=${BASE_OUTFILE}_temporary_braol.uniprot-brassica+oleracea.scan2.txt
 
 
 echo "All hits"
@@ -96,6 +96,7 @@ fi
 cat $ALL_OUTFILE $TMP_OUTFILE > temporary_outfile.txt
 mv temporary_outfile.txt $ALL_OUTFILE
 rm temporary_outfile.txt 
+rm $TMP_OUTFILE 
 
 echo Parsing scan files finished
 
