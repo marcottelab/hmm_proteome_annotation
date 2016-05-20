@@ -19,7 +19,7 @@ for raw_line in annot[1:]:
     else:
         annot_line = "none" + "|" + i[0] + "|" + i[2]
     
-    annotdict[i[3]] = annot_line
+    annotdict[i[4]] = annot_line
    
 
 infasta = sys.argv[2]
@@ -32,8 +32,6 @@ handle = open(infasta, "rU")
 for record in SeqIO.parse(handle, "fasta"):
     #prot = record.id.split(" ")[0] 
     prot = record.id
-
-
     try:
         annotation = annotdict[prot] 
 

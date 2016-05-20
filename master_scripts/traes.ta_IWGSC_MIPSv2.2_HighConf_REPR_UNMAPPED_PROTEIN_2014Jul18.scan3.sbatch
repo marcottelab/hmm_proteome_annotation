@@ -1,6 +1,6 @@
 #!/bin/bash
-#SBATCH -J scanID.phylolevel      # job name
-#SBATCH -o scanID.phylolevel.o%j       # output and error file name (%j expands to jobID)
+#SBATCH -J traes.ta_IWGSC_MIPSv2.2_HighConf_REPR_UNMAPPED_PROTEIN_2014Jul18.scan3.euNOG      # job name
+#SBATCH -o traes.ta_IWGSC_MIPSv2.2_HighConf_REPR_UNMAPPED_PROTEIN_2014Jul18.scan3.euNOG.o%j       # output and error file name (%j expands to jobID)
 #SBATCH -n 1              # total number of mpi tasks requested
 #SBATCH -p normal     # queue (partition) -- normal, development, etc.
 #SBATCH -c 16 		# number of CPUs/task
@@ -15,23 +15,23 @@ module load python/2.7.9
 
 
 #ex human
-SPEC="speciescode"
+SPEC="traes"
 
 #ex euNOG
-LVL="phylolevel"
+LVL="euNOG"
 
 #ex arath_uniprot-proteom%3AUP0000006548scan1.txt
-SCAN="scanID"
+SCAN="traes.ta_IWGSC_MIPSv2.2_HighConf_REPR_UNMAPPED_PROTEIN_2014Jul18.scan3"
 
 #ex uniprot-proteome%3AUP000006548.fasta
-PROTEOMENAME="proteomename"
+PROTEOMENAME="ta_IWGSC_MIPSv2.2_HighConf_REPR_UNMAPPED_PROTEIN_2014Jul18.fasta"
 
-PROTEOMEPATH="proteomepath"
+PROTEOMEPATH="proteomes/traes/ta_IWGSC_MIPSv2.2_HighConf_REPR_UNMAPPED_PROTEIN_2014Jul18.fasta"
 
-PROTEOMEDIR="proteomedir"
+PROTEOMEDIR="proteomes/traes"
 
 
-NUMPROT="proteomelength"
+NUMPROT="111982"
 
 ANNOT=${LVL}.annotations.tsv
 
@@ -64,7 +64,7 @@ echo false positive cutoff $CUTOFF
 echo "start hmm scan"
 #/home1/03491/cmcwhite/bin/hmmer/hmmscan -Z $NUMPROT --cpu 16 -o output_data/${SPEC}_${PROTEOME}_${LVL}/${SCAN}.txt hmms/${LVL}_pressed/${LVL}_hmms proteomes/${SPEC}/${SCAN}.fasta
 #/home1/03491/cmcwhite/bin/hmmer/hmmscan -Z $NUMPROT --cpu 16 -o $OUTPUTLOC/${SCAN%.*}.txt hmms/${LVL}_pressed/${LVL}_hmms proteomes/${SPEC}/${SCAN}
-#/home1/03491/cmcwhite/bin/hmmer/hmmscan -Z $NUMPROT --cpu 16 -o $OUTPUTLOC/${SCAN%.*}.txt hmms/${LVL}_pressed/${LVL}_hmms $PROTEOMEDIR/${SCAN}
+/home1/03491/cmcwhite/bin/hmmer/hmmscan -Z $NUMPROT --cpu 16 -o $OUTPUTLOC/${SCAN%.*}.txt hmms/${LVL}_pressed/${LVL}_hmms $PROTEOMEDIR/${SCAN}
 
 echo "start processing"
 
@@ -77,7 +77,7 @@ cd $OUTPUTLOC
 
 BASE_OUTFILE=${SPEC}.${LVL}
 ALL_OUTFILE=${BASE_OUTFILE}_all.txt
-TMP_OUTFILE=${BASE_OUTFILE}_temporary_scanID.txt
+TMP_OUTFILE=${BASE_OUTFILE}_temporary_traes.ta_IWGSC_MIPSv2.2_HighConf_REPR_UNMAPPED_PROTEIN_2014Jul18.scan3.txt
 
 
 echo "All hits"
