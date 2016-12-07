@@ -21,11 +21,13 @@ if [[ $# -eq 0 ]] ; then
     exit 1
 fi
 
-if [ "$#" -ne 3 ]; then
-    echo "You must enter exactly 2 command line arguments"
+if [ "$#" -ne 4 ]; then
+    echo "You must enter exactly 4 command line arguments"
     echo 'argument 1: species code ex. arath'
     echo 'argument 2: input FASTA ex. $BASEDIR/HMM_sorting/proteomes/arath/uniprot-proteome%3AUP000006548.fasta'
-    echo 'argument 3: EggNOG HMM level code ex. euNOG'
+    echo 'argument 4: Name of annotation file stored in /hmms ex all_annotations.csv'
+
+
     exit 1
 fi
 
@@ -37,6 +39,8 @@ SPEC=$1
 echo $SPEC
 PROTEOMEPATH=$2
 LVL=$3
+ANNOT=$4
+
 echo $PROTEOMEPATH
 
 echo $LVL
@@ -84,13 +88,13 @@ do
 
    sed "s@speciescode@$SPEC@g" $BASEDIR/master_scripts/templateHmmscan.sbatch > $BASEDIR/master_scripts/$outfile
    sed -i "s@phylolevel@$LVL@g" $BASEDIR/master_scripts/$outfile
-   sed -i "s@scanID@${i%.*}@g" $BASEDIR/master_scripts/$outfile
+   sed -i "s@scanID@${i%.fasta}@g" $BASEDIR/master_scripts/$outfile
    sed -i "s@proteomelength@$PROTEOMELENGTH@g" $BASEDIR/master_scripts/$outfile  
    sed -i "s@proteomename@$PROTEOMENAME@g" $BASEDIR/master_scripts/$outfile
    sed -i "s@proteomepath@$PROTEOMEPATH@g" $BASEDIR/master_scripts/$outfile
    sed -i "s@proteomedir@$PROTEOMEDIR@g" $BASEDIR/master_scripts/$outfile
    sed -i "s@outputloc@$OUTPUTLOC@g" $BASEDIR/master_scripts/$outfile
-
+   sed -i "s@annotations@$ANNOT@g" $BASEDIR/master_scripts/$outfile
 
   
    cd $BASEDIR

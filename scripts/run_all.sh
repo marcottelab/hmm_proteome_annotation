@@ -14,7 +14,7 @@ PROTEOME=$3
 CUTOFF=$4
 
 #name of hmm output file
-SCAN=$5
+SCAN=${5%*.fasta}.txt
 
 #name of eggnog annotation file
 ANNOT=$6
@@ -24,14 +24,15 @@ ANNOTLOC=$BASEDIR/hmms
 
 
 echo "Starting post hmmscan processing"
+ /work/03491/cmcwhite/HMM_proteome_annotation/output_data/xentr_tk_XENTR_JGIv90pV2_prot_final.fasta_euNOG:
 
 
-OUTPUTLOC=$BASEDIR/output_data/${SPEC}_${PROTEOME}_${LVL}
+OUTPUTLOC=$BASEDIR/output_data/${SPEC}_${PROTEOME%.*}_${LVL}
 echo $OUTPUTLOC
 cd $OUTPUTLOC
 
 BASE_OUTFILE=${SPEC}.${PROTEOME}.${LVL}
-ALL_OUTFILE=${BASE_OUTFILE}_all.txt
+ALL_OUTFILE=${BASE_OUTFILE}_all
 
 
 if [ ! -f $ALL_OUTFILE ]
@@ -44,7 +45,7 @@ echo $( pwd )
 
 
 #Instead of all these, have an argparse main script with an option for analysis type
-python $SCRIPTLOC/opt_process_all.py $SCAN.txt $ALL_OUTFILE $LVL $BASEDIR/proteomes/$SPEC/$PROTEOME $CUTOFF
+python $SCRIPTLOC/opt_process_all.py $SCAN $ALL_OUTFILE $LVL $BASEDIR/proteomes/$SPEC/$PROTEOME $CUTOFF $SPEC
 
 #Get top evalue hit
 #Will be rerun with every scan

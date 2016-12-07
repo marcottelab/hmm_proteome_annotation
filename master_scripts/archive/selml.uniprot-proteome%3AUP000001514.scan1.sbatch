@@ -1,6 +1,6 @@
 #!/bin/bash
-#SBATCH -J arath.uniprot-proteome%3AUP000006548.scan2      # job name
-#SBATCH -o arath.uniprot-proteome%3AUP000006548.scan2.o%j       # output and error file name (%j expands to jobID)
+#SBATCH -J selml.uniprot-proteome%3AUP000001514.scan1      # job name
+#SBATCH -o selml.uniprot-proteome%3AUP000001514.scan1.o%j       # output and error file name (%j expands to jobID)
 #SBATCH -n 1              # total number of mpi tasks requested
 #SBATCH -p normal     # queue (partition) -- normal, development, etc.
 #SBATCH -c 16 		# number of CPUs/task
@@ -16,18 +16,18 @@ module load python/2.7.9
 #
 
 #ex human
-SPEC="arath"
+SPEC="selml"
 
 #ex euNOG
 LVL="euNOG"
 
 #ex arath_uniprot-proteom%3AUP0000006548scan1.fasta
-SCAN="arath.uniprot-proteome%3AUP000006548.scan2.fasta"
+SCAN="selml.uniprot-proteome%3AUP000001514.scan1.fasta"
 
 #ex uniprot-proteome%3AUP000006548.fasta
-PROTEOME="uniprot-proteome%3AUP000006548.fasta"
+PROTEOME="uniprot-proteome%3AUP000001514.fasta"
 
-NUMPROT="31527"
+NUMPROT="33150"
 
 #ANNOT=${LVL}.all_annotations.csv.tsv
 ANNOT="all_annotations.csv"

@@ -1,6 +1,6 @@
 #!/bin/bash
-#SBATCH -J arath.uniprot-proteome%3AUP000006548.scan2      # job name
-#SBATCH -o arath.uniprot-proteome%3AUP000006548.scan2.o%j       # output and error file name (%j expands to jobID)
+#SBATCH -J xentr_tk.XENTR_JGIv90pV2_prot_final.scan1      # job name
+#SBATCH -o xentr_tk.XENTR_JGIv90pV2_prot_final.scan1.o%j       # output and error file name (%j expands to jobID)
 #SBATCH -n 1              # total number of mpi tasks requested
 #SBATCH -p normal     # queue (partition) -- normal, development, etc.
 #SBATCH -c 16 		# number of CPUs/task
@@ -16,21 +16,21 @@ module load python/2.7.9
 #
 
 #ex human
-SPEC="arath"
+SPEC="xentr_tk"
 
 #ex euNOG
-LVL="euNOG"
+LVL="veNOG"
 
 #ex arath_uniprot-proteom%3AUP0000006548scan1.fasta
-SCAN="arath.uniprot-proteome%3AUP000006548.scan2.fasta"
+SCAN="xentr_tk.XENTR_JGIv90pV2_prot_final.scan1"
 
 #ex uniprot-proteome%3AUP000006548.fasta
-PROTEOME="uniprot-proteome%3AUP000006548.fasta"
+PROTEOME="XENTR_JGIv90pV2_prot_final.fasta"
 
-NUMPROT="31527"
+NUMPROT="26218"
 
-#ANNOT=${LVL}.all_annotations.csv.tsv
-ANNOT="all_annotations.csv"
+#ANNOT=${LVL}.veNOG.annotations.tsv.tsv
+ANNOT="veNOG.annotations.tsv"
 
 echo $SPEC
 echo $LVL
@@ -51,10 +51,18 @@ echo $CUTOFF
 
 
 echo "start hmm scan"
+#This is the working command
 #/home1/03491/cmcwhite/bin/hmmer/hmmscan -Z $NUMPROT --cpu 16 -o output_data/${SPEC}_${PROTEOME}_${LVL}/${SCAN}.txt hmms/${LVL}_pressed/${LVL}_hmms proteomes/${SPEC}/${SCAN}.fasta 
-#/home1/03491/cmcwhite/bin/hmmer/hmmscan -Z $NUMPROT --cpu 16 -o $OUTPUTLOC/${SCAN%.*}.txt hmms/${LVL}_pressed/${LVL}_hmms proteomes/${SPEC}/${SCAN} 
+
+#Workign command?Used for corum
+/home1/03491/cmcwhite/bin/hmmer/hmmscan -Z $NUMPROT --cpu 16 -o $OUTPUTLOC/${SCAN%.fasta}.txt hmms/${LVL}_pressed/${LVL}_hmms proteomes/${SPEC}/${SCAN}.fasta
+
+echo $SCAN
+echo ${SCAN%.fasta}
 
 echo "start processing"
+
+#Not doing this anymore. run_all commands moved to this script
 #bash scripts/run_all.sh $SPEC $LVL $PROTEOME $CUTOFF $SCAN $ANNOT
 
 
@@ -63,7 +71,7 @@ ANNOTLOC=$BASEDIR/hmms
 
 cd $OUTPUTLOC
 
-BASE_OUTFILE=${SPEC}.${LVL}
+BASE_OUTFILE=${SCAN}.${SPEC}.${LVL}
 ALL_OUTFILE=${BASE_OUTFILE}_all.txt
 ANNOT_OUTFILE=${BASE_OUTFILE}_annotated.txt
 NONHITS_OUTFILE=${BASE_OUTFILE}_nonhits.txt
@@ -82,7 +90,7 @@ echo $( pwd )
 
 
 #Instead of all these, have an argparse main script with an option for analysis type
-#python $SCRIPTLOC/opt_process_all.py ${SCAN%.*}.txt $ALL_OUTFILE $LVL $BASEDIR/proteomes/$SPEC/$PROTEOME $CUTOFF $SPEC
+python $SCRIPTLOC/opt_process_all.py ${SCAN}.txt $ALL_OUTFILE $LVL $BASEDIR/proteomes/$SPEC/$PROTEOME $CUTOFF $SPEC
 
 
 

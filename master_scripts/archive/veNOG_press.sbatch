@@ -1,6 +1,6 @@
 #!/bin/bash
-#SBATCH -J level           # job name
-#SBATCH -o level.o%j       # output and error file name (%j expands to jobID)
+#SBATCH -J veNOG           # job name
+#SBATCH -o veNOG.o%j       # output and error file name (%j expands to jobID)
 #SBATCH -n 1              # total number of mpi tasks requested
 #SBATCH -p normal     # queue (partition) -- normal, development, etc.
 #SBATCH -c 16 		# number of CPUs/task
@@ -12,7 +12,7 @@
 
 module load python/2.7.12
 
-LVL=level
+LVL=veNOG
 
 outfile=${LVL}_pressed
 

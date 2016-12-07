@@ -53,6 +53,7 @@ def eToFloat(x):
    
  
 def processdf(filename):
+    print filename
     df = pd.read_table(filename, sep="\t", index_col=False)
     print df
     #df = df[['Rank', 'Level', 'ProteinID', 'GroupID', 'evalue', 'QueryRange', 'ProteomeID']]
@@ -91,9 +92,9 @@ def hitlength(df):
 def annotate(df, annotationtbl):
     print df
     print annotationtbl
-    anntbl = pd.read_table(annotationtbl, sep="\t", header=None, index_col=False)
+    anntbl = pd.read_table(annotationtbl, sep=",", index_col=False)
     print anntbl
-    anntbl.columns = ['level', 'GroupID', 'x', 'y', 'z', 'Annotation']
+    #anntbl.columns = ['level', 'GroupID', 'x', 'y', 'z', 'Annotation']
     print anntbl
     anntbl = anntbl[['GroupID', 'Annotation']]
     anntbl = anntbl.set_index(['GroupID']) 

@@ -12,20 +12,15 @@ import numpy as np
 import ast    
 import scan_proc_functions as spf
 import csv
+import argparse
 #sys.path[0:0] = ['/home1/03491/cmcwhite/bin']
 
-if len(sys.argv)==3:
-    filename=sys.argv[1]
-    annotationfilename=sys.argv[2]
+
+def annotation_function(infilename, outfilename, annotationfilename):
     print "annotationfilename", annotationfilename
-    df = spf.processdf(filename)
+    df = spf.processdf(infilename)
     print len(df), "initial hits" 
-    basename = filename.replace("all.txt", "")
-#    fasta = sys.argv[3]
-
-
-
-#    print "Get proteins without an HMM profile hit"
+#    fasta = sys.arg#    print "Get proteins without an HMM profile hit"
 #    outfile = basename +"nonhits.txt"
 #    print df
 #    non_hits= spf.nonhits(df)
@@ -36,7 +31,6 @@ if len(sys.argv)==3:
   
 
     print "Get annotated file"
-    outfile = basename + "annotated.txt"
 #    print df
 #    only_hitstmp=spf.onlyhits(df)
 #    print len(only_hitstmp), "only hits tmp starting"
@@ -48,7 +42,7 @@ if len(sys.argv)==3:
     print len(annotated), "length after annotations"
 
 
-    annotated.to_csv(outfile, sep="\t", index=False, quoting=csv.QUOTE_NONE, quotechar="")    
+    annotated.to_csv(outfilename, sep="\t", index=False, quoting=csv.QUOTE_NONE, quotechar="")    
 
 #    if not only_hits.empty:
 #        print "Get just the top hit"
@@ -57,5 +51,14 @@ if len(sys.argv)==3:
 #        print len(top1), "hits"
 #        top1.to_csv(outfile, sep="\t", index=False, quoting=csv.QUOTE_NONE, quotechar="")    
    
-else:
-    print "need infile  [basename name]_all.txt generated from opt_process_all,  annotation file, and fasta file"
+
+
+parser = argparse.ArgumentParser(description='Annotated orthology table')
+parser.add_argument('infilename', action="store", type=str)
+parser.add_argument('outfilename', action="store", type=str)
+parser.add_argument('annotationfilename', action="store", type=str)
+
+inputs = parser.parse_args()
+
+annotation_function(inputs.infilename, inputs.outfilename, inputs.annotationfilename)
+

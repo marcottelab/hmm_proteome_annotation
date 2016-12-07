@@ -1,6 +1,6 @@
 #!/bin/bash
-#SBATCH -J arath.uniprot-proteome%3AUP000006548.scan2      # job name
-#SBATCH -o arath.uniprot-proteome%3AUP000006548.scan2.o%j       # output and error file name (%j expands to jobID)
+#SBATCH -J hymbo.Xtr.Hym.PEP.fa.scan1      # job name
+#SBATCH -o hymbo.Xtr.Hym.PEP.fa.scan1.o%j       # output and error file name (%j expands to jobID)
 #SBATCH -n 1              # total number of mpi tasks requested
 #SBATCH -p normal     # queue (partition) -- normal, development, etc.
 #SBATCH -c 16 		# number of CPUs/task
@@ -16,18 +16,18 @@ module load python/2.7.9
 #
 
 #ex human
-SPEC="arath"
+SPEC="hymbo"
 
 #ex euNOG
 LVL="euNOG"
 
 #ex arath_uniprot-proteom%3AUP0000006548scan1.fasta
-SCAN="arath.uniprot-proteome%3AUP000006548.scan2.fasta"
+SCAN="hymbo.Xtr.Hym.PEP.fa.scan1.fasta"
 
 #ex uniprot-proteome%3AUP000006548.fasta
-PROTEOME="uniprot-proteome%3AUP000006548.fasta"
+PROTEOME="Xtr.Hym.PEP.fa"
 
-NUMPROT="31527"
+NUMPROT="24824"
 
 #ANNOT=${LVL}.all_annotations.csv.tsv
 ANNOT="all_annotations.csv"
@@ -52,10 +52,12 @@ echo $CUTOFF
 
 echo "start hmm scan"
 #/home1/03491/cmcwhite/bin/hmmer/hmmscan -Z $NUMPROT --cpu 16 -o output_data/${SPEC}_${PROTEOME}_${LVL}/${SCAN}.txt hmms/${LVL}_pressed/${LVL}_hmms proteomes/${SPEC}/${SCAN}.fasta 
+
+#Workign command?Used for frogs
 #/home1/03491/cmcwhite/bin/hmmer/hmmscan -Z $NUMPROT --cpu 16 -o $OUTPUTLOC/${SCAN%.*}.txt hmms/${LVL}_pressed/${LVL}_hmms proteomes/${SPEC}/${SCAN} 
 
 echo "start processing"
-#bash scripts/run_all.sh $SPEC $LVL $PROTEOME $CUTOFF $SCAN $ANNOT
+bash scripts/run_all.sh $SPEC $LVL $PROTEOME $CUTOFF $SCAN $ANNOT
 
 
 SCRIPTLOC=$BASEDIR/scripts

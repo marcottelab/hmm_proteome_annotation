@@ -1,18 +1,18 @@
 #!/bin/bash
-#SBATCH -J level           # job name
-#SBATCH -o level.o%j       # output and error file name (%j expands to jobID)
+#SBATCH -J virNOG           # job name
+#SBATCH -o virNOG.o%j       # output and error file name (%j expands to jobID)
 #SBATCH -n 1              # total number of mpi tasks requested
 #SBATCH -p normal     # queue (partition) -- normal, development, etc.
 #SBATCH -c 16 		# number of CPUs/task
-#SBATCH -t 10:00:00        # run time (hh:mm:ss) - 1.5 hours
+#SBATCH -t 48:00:00        # run time (hh:mm:ss) - 1.5 hours
 #SBATCH --mail-user=claire.mcwhite@utexas.edu
 #SBATCH --mail-type=begin  # email me when the job starts
 #SBATCH --mail-type=end    # email me when the job finishes
 #SBATCH -A A-cm10          # Specify allocation to charge against
 
-module load python/2.7.12
+module load python/2.7.9
 
-LVL=level
+LVL=virNOG
 
 outfile=${LVL}_pressed
 
