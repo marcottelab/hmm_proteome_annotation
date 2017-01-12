@@ -60,69 +60,67 @@ echo "start hmm scan"
 echo $SCAN
 echo ${SCAN%.fasta}
 
-echo "start processing"
-
-#Not doing this anymore. run_all commands moved to this script
-#bash scripts/run_all.sh $SPEC $LVL $PROTEOME $CUTOFF $SCAN $ANNOT
-
-
-SCRIPTLOC=$BASEDIR/scripts
-ANNOTLOC=$BASEDIR/hmms
-
-cd $OUTPUTLOC
-
-BASE_OUTFILE=${SCAN}.${SPEC}.${LVL}
-ALL_OUTFILE=${BASE_OUTFILE}_all.txt
-ANNOT_OUTFILE=${BASE_OUTFILE}_annotated.txt
-NONHITS_OUTFILE=${BASE_OUTFILE}_nonhits.txt
-TOPHIT_OUTFILE=${BASE_OUTFILE}_tophit.txt
-TOPTWO_OUTFILE=${BASE_OUTFILE}_toptwo.txt
-ORTHOLOGY_OUTFILE=${BASE_OUTFILE}_orthology.tab
-
-if [ ! -f $ALL_OUTFILE ]
-    then
-        echo -e "Rank\tLevel\tSpecies\tProteinID\tGroupID\tevalue\tQueryRange\tProteomeID\tHitlength\tSequence" >> $ALL_OUTFILE
-
-fi
-
-echo "All hits"
-echo $( pwd )
-
-
-#Instead of all these, have an argparse main script with an option for analysis type
-python $SCRIPTLOC/opt_process_all.py ${SCAN}.txt $ALL_OUTFILE $LVL $BASEDIR/proteomes/$SPEC/$PROTEOME $CUTOFF $SPEC
-
-
-
-
-#Get top evalue hit
-#Will be rerun with every scan
-
-python $SCRIPTLOC/get_annotation.py $ALL_OUTFILE $ANNOT_OUTFILE $ANNOTLOC/$ANNOT
-
-
-echo -e "GroupID\tRank\tLevel\tSpecies\tProteinID\tevalue\tQueryRange\tProteomeID\tHitlength\tSequence\tAnnotation" > $NONHITS_OUTFILE
-grep -P "\tn/a\t" $ANNOT_OUTFILE >> $NONHITS_OUTFILE
-
-echo -e "GroupID\tRank\tLevel\tSpecies\tProteinID\tevalue\tQueryRange\tProteomeID\tHitlength\tSequence\tAnnotation" > $TOPHIT_OUTFILE
-grep -P "\t1\t" $ANNOT_OUTFILE >> $TOPHIT_OUTFILE
-
-echo -e "GroupID\tRank\tLevel\tSpecies\tProteinID\tevalue\tQueryRange\tProteomeID\tHitlength\tSequence\tAnnotation" > $TOPTWO_OUTFILE
-grep -P "\t1\t" $ANNOT_OUTFILE >> $TOPTWO_OUTFILE
-grep -P "\t2\t" $ANNOT_OUTFILE >> $TOPTWO_OUTFILE
-
-echo -e "GroupID\tRank\tLevel\tSpecies\tProteinID\tevalue\tQueryRange\tProteomeID\tHitlength\tSequence\tAnnotation" > $ORTHOLOGY_OUTFILE
-grep -P "\t1\t" $ANNOT_OUTFILE >> $ORTHOLOGY_OUTFILE
-grep -P "\tn/a\t" $ANNOT_OUTFILE >> $ORTHOLOGY_OUTFILE
-
-
-PROTEOMELOC=$BASEDIR/proteomes/$SPEC
-
-
-python $SCRIPTLOC/annotate_fasta.py $TOPHIT_OUTFILE $PROTEOMELOC/${PROTEOME} $PROTEOMELOC/${PROTEOME%.*}_${LVL}_annotated.fasta
-
-
-
-
+#echo "start processing"
+#
+##Not doing this anymore. run_all commands moved to this script
+#
+#SCRIPTLOC=$BASEDIR/scripts
+#ANNOTLOC=$BASEDIR/hmms
+#
+#cd $OUTPUTLOC
+#
+#BASE_OUTFILE=${SCAN}.${SPEC}.${LVL}
+#ALL_OUTFILE=${BASE_OUTFILE}_all.txt
+#ANNOT_OUTFILE=${BASE_OUTFILE}_annotated.txt
+#NONHITS_OUTFILE=${BASE_OUTFILE}_nonhits.txt
+#TOPHIT_OUTFILE=${BASE_OUTFILE}_tophit.txt
+#TOPTWO_OUTFILE=${BASE_OUTFILE}_toptwo.txt
+#ORTHOLOGY_OUTFILE=${BASE_OUTFILE}_orthology.tab
+#
+#if [ ! -f $ALL_OUTFILE ]
+#    then
+#        echo -e "Rank\tLevel\tSpecies\tProteinID\tGroupID\tevalue\tQueryRange\tProteomeID\tHitlength\tSequence" >> $ALL_OUTFILE
+#
+#fi
+#
+#echo "All hits"
+#echo $( pwd )
+#
+#
+##Instead of all these, have an argparse main script with an option for analysis type
+#python $SCRIPTLOC/opt_process_all.py ${SCAN}.txt $ALL_OUTFILE $LVL $BASEDIR/proteomes/$SPEC/$PROTEOME $CUTOFF $SPEC
+#
+#
+#
+#
+##Get top evalue hit
+##Will be rerun with every scan
+#
+#python $SCRIPTLOC/get_annotation.py $ALL_OUTFILE $ANNOT_OUTFILE $ANNOTLOC/$ANNOT
+#
+#
+#echo -e "GroupID\tRank\tLevel\tSpecies\tProteinID\tevalue\tQueryRange\tProteomeID\tHitlength\tSequence\tAnnotation" > $NONHITS_OUTFILE
+#grep -P "\tn/a\t" $ANNOT_OUTFILE >> $NONHITS_OUTFILE
+#
+#echo -e "GroupID\tRank\tLevel\tSpecies\tProteinID\tevalue\tQueryRange\tProteomeID\tHitlength\tSequence\tAnnotation" > $TOPHIT_OUTFILE
+#grep -P "\t1\t" $ANNOT_OUTFILE >> $TOPHIT_OUTFILE
+#
+#echo -e "GroupID\tRank\tLevel\tSpecies\tProteinID\tevalue\tQueryRange\tProteomeID\tHitlength\tSequence\tAnnotation" > $TOPTWO_OUTFILE
+#grep -P "\t1\t" $ANNOT_OUTFILE >> $TOPTWO_OUTFILE
+#grep -P "\t2\t" $ANNOT_OUTFILE >> $TOPTWO_OUTFILE
+#
+#echo -e "GroupID\tRank\tLevel\tSpecies\tProteinID\tevalue\tQueryRange\tProteomeID\tHitlength\tSequence\tAnnotation" > $ORTHOLOGY_OUTFILE
+#grep -P "\t1\t" $ANNOT_OUTFILE >> $ORTHOLOGY_OUTFILE
+#grep -P "\tn/a\t" $ANNOT_OUTFILE >> $ORTHOLOGY_OUTFILE
+#
+#
+#PROTEOMELOC=$BASEDIR/proteomes/$SPEC
+#
+#
+#python $SCRIPTLOC/annotate_fasta.py $TOPHIT_OUTFILE $PROTEOMELOC/${PROTEOME} $PROTEOMELOC/${PROTEOME%.*}_${LVL}_annotated.fasta
+#
+#
+#
+#
 
 

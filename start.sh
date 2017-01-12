@@ -22,6 +22,7 @@
 #bash master_scripts/startHmmscan.sh xentr_tk proteomes/xentr_tk/XENTR_JGIv90pV2_prot_final.fasta euNOG all_annotations.csv
 #bash master_scripts/startHmmscan.sh hymbo proteomes/hymbo/Xtr_Hym_PEP.fasta euNOG all_annotations.csv
 #bash master_scripts/startHmmscan.sh xentr_tk proteomes/xentr_tk/XENTR_JGIv90pV2_prot_final.fasta veNOG all_annotations.csv
-bash master_scripts/startHmmscan.sh xenla_tk proteomes/xenla_tk/XENLA_JGIv18pV4_prot.fasta veNOG all_annotations.csv
-bash master_scripts/startHmmscan.sh hymbo proteomes/hymbo/Xtr_Hym_PEP.fasta veNOG all_annotations.csv
+#bash master_scripts/startHmmscan.sh xenla_tk proteomes/xenla_tk/XENLA_JGIv18pV4_prot.fasta veNOG all_annotations.csv
+#bash master_scripts/startHmmscan.sh hymbo proteomes/hymbo/Xtr_Hym_PEP.fasta veNOG all_annotations.csv
+bash master_scripts/startHmmscan.sh human proteomes/human/uniprot-proteome_human_reviewed.fasta veNOG veNOG.annotations.csv
 
