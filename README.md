@@ -1,3 +1,7 @@
+VERY DEPRECATED
+
+Use eggNOG emapper.py scripts instead
+
 This is a process for sorting a whole proteome into Hmm profiles using hmmscan. 
 outputs:
 1. A flat file of the best hit protein - HMM profile matches with annotations (tophit)
